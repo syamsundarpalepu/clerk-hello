@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs'
 import './globals.css'
 
@@ -15,18 +16,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ClerkProvider>
-          <header style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: 16, gap: 16 }}>
-            <Show when="signed-out">
-              <SignInButton />
-              <SignUpButton />
-            </Show>
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
-          </header>
-          {children}
-        </ClerkProvider>
+        <Suspense>
+          <ClerkProvider>
+            <header style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: 16, gap: 16 }}>
+              <Show when="signed-out">
+                <SignInButton />
+                <SignUpButton />
+              </Show>
+              <Show when="signed-in">
+                <UserButton />
+              </Show>
+            </header>
+            {children}
+          </ClerkProvider>
+        </Suspense>
       </body>
     </html>
   )
